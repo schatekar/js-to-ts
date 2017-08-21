@@ -1,8 +1,8 @@
-var prompt     = require("prompt-sync")();
-var calculator = require("./calculator");
+import * as p from "prompt-sync"
+import * as calc from "./calculator"
+let prompt = p();
 
-
-var readInput = () => {
+function readInput() {
   console.log("Welcome to the calculator. Choose one of the following options");
   console.log("1. add");
   console.log("2. subtract");
@@ -14,33 +14,33 @@ var readInput = () => {
 
   if (option !== "5") {
     console.log("Enter the first number");
-    let a = prompt(">> ");
+    let a = parseInt(prompt(">> "));
 
     console.log("Enter the second number");
-    let b = prompt(">> ");
+    let b = parseInt(prompt(">> "));
 
     let c;
     switch(option){
       case "1": {
-        c = calculator.add(a, b);
+        c = calc.add(a, b);
         console.log(`a + b = ${c}`);
       }
       break;
 
       case "2": {
-        c = calculator.subtract(a, b);
+        c = calc.subtract(a, b);
         console.log(`a - b = ${c}`);
       }
       break;
 
       case "3": {
-        c = calculator.multiply(a, b);
+        c = calc.multiply(a, b);
         console.log(`a * b = ${c}`);
       }
       break;
 
       case "4": {
-        c = calculator.divide(a, b);
+        c = calc.divide(a, b);
         console.log(`a / b = ${c}`);
       }
       break;
