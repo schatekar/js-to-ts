@@ -151,7 +151,7 @@ We do not have any external module in this example that does not have Type decla
 I have never personally tried this so cannot vouch for reliability but this is what community defined Type declaration files are doing under the hood. 
 The source code at the end of this section is in [add-types](https://github.com/schatekar/js-to-ts/tree/add-types) branch.
 
-# Convert the entry module into TypeScript
+# 3. Convert the entry module into TypeScript
 Finally we are ready to convert our first module into TypeScript. There is not much really in this step. Rename `index.js` to `index.ts` and start rewriting the module in typescript. If you use the `import` syntax for bringing in the dependent modules then TypeScript compiler will look at the type declaration files of the target module and enforce type checking in addition to usual Javascript compiler checks. Here is how my converted `index.ts` file looks like
 
 
@@ -215,9 +215,9 @@ console.log("Thank you for using calculator. Good Bye");
 
 Yeyy. We converted our first module from javascript to typescript. If you run `npn run build` at this point, you will notice the webpack successfully gives us a packaged bundle in `lib/index.js` that is ready to use. 
 
-The final code for this section is in the branch `convert-entry-module`. After you have cloned the repo, just checkout this branch and run `npm run build` to see the code in action. 
+The source code at the end of this section is in [convert-entry-module](https://github.com/schatekar/js-to-ts/tree/convert-entry-module) branch.
 
-# Keep going
+# 4. Keep going
 Converting the first javascript file is a big win. You have basic plumbing in place now to take on the bigger task. You may want to expand your webpack configuration to include other types of files you may have in your project, add production build steps like minification, uglification etc. At the same time, you also need to keep converting more and more files from javascript to typescript. The next logical step is to get rid of our own type declaration files by converting the javascript modules into typescript. Let's change the `calculator` module to get rid of `calculator.d.ts`. There are a number of ways, you can rewrite calculator module using typescript. The simplest is to just export the four methods in the module like below. 
 
 ```ts
@@ -238,4 +238,4 @@ export function divide(a: number, b: number): number {
 ```
 Delete the `calculator.d.ts` file and re-run `npm run build` you would get your packaged bundle in `lib/index.js`. 
 
-That's it. We have converted everything in this project from javascript to typescript. The source code at the end of this section is in branch `keep-going` if you want to take a look. 
+That's it. We have converted everything in this project from javascript to typescript. The source code at the end of this section is in [keep-going](https://github.com/schatekar/js-to-ts/tree/keep-going) branch.
