@@ -8,9 +8,11 @@ This a long-ish read. I have divided the content into three main sections
 2. Adding Type declaration files
 3. Convert the code into typescript
 
+The source code for this article is on [GitHub](https://github.com/schatekar/js-to-ts). It is a very simple calculator application with just two files. I think that is enough files to demonstrate the approach. The initial javascript source is in [master branch](https://github.com/schatekar/js-to-ts). the changed source code at the end of every section is in appropriate branches in the same repository. 
+
 Let's drive straight in then.
 
-# Adding  typescript config and webpack
+# 1. Adding  typescript config and webpack
 
 Any typescript code has to be transpiled down to JavaScript before it can be run. That is where webpack comes in handy. If you have never used Webpack before, then I recommend reading [A detailed introduction to webpack](https://www.smashingmagazine.com/2017/02/a-detailed-introduction-to-webpack/) before proceeding. 
 
@@ -104,9 +106,11 @@ Next we need a way to invoke webpack. There are two ways you can do this. The we
     "build": "node_modules/.bin/webpack --config webpack.config.js"
 },
 ```
-Note that I have padded a `--config` flag which is not really needed because webpack looks for a file named `webpack.config.js` by default. But if you prefer to name your webpack config file differently then make sure you pass the `--config` flag
+Note that I have padded a `--config` flag which is not really needed because webpack looks for a file named `webpack.config.js` by default. But if you prefer to name your webpack config file differently then make sure you pass the `--config` flag.
 
-# Add Type declaration files
+The source code at the end of this section is in [add-webpack](https://github.com/schatekar/js-to-ts/tree/add-webpack) branch.
+
+# 2. Add Type declaration files
 
 We need to find the first module that we can safely convert to Typescript. This is usually the entry module of our project. In our example, that would be `index.js`. To use the full power of Typescript in our converted module, we need to have type declaration files for other modules that this module is dependent on. 
 There are two concepts around type declaration files that we need to understand. I am assuming that you know what type declaration files are, if not, I would recommend reading the [official guidance on this topic](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html)
@@ -145,6 +149,7 @@ Notice that this is exposing the same methods as our calculator module but has a
 We do not have any external module in this example that does not have Type declaration files available. But if that were the case with you, you can combine the knowledge from the above two points. First you build your own type declaration file and name it `index.d.ts`. This can include only the methods/interfaces from the external module that you are using in your code. This type declaration file file needs to be kept under the folder `node_modules/@types/{module_name}/`
 
 I have never personally tried this so cannot vouch for reliability but this is what community defined Type declaration files are doing under the hood. 
+The source code at the end of this section is in [add-types](https://github.com/schatekar/js-to-ts/tree/add-types) branch.
 
 # Convert the entry module into TypeScript
 Finally we are ready to convert our first module into TypeScript. There is not much really in this step. Rename `index.js` to `index.ts` and start rewriting the module in typescript. If you use the `import` syntax for bringing in the dependent modules then TypeScript compiler will look at the type declaration files of the target module and enforce type checking in addition to usual Javascript compiler checks. Here is how my converted `index.ts` file looks like
@@ -216,5 +221,21 @@ The final code for this section is in the branch `convert-entry-module`. After y
 Converting the first javascript file is a big win. You have basic plumbing in place now to take on the bigger task. You may want to expand your webpack configuration to include other types of files you may have in your project, add production build steps like minification, uglification etc. At the same time, you also need to keep converting more and more files from javascript to typescript. The next logical step is to get rid of our own type declaration files by converting the javascript modules into typescript. Let's change the `calculator` module to get rid of `calculator.d.ts`. There are a number of ways, you can rewrite calculator module using typescript. The simplest is to just export the four methods in the module like below. 
 
 ```ts
+export function add(a: number, b: number): number {
+  return a + b;
+}
 
-``` 
+export function subtract(a: number, b: number): number {
+  return a - b;
+}
+
+export function multiply(a: number, b: number): number {
+  return a * b;
+}
+export function divide(a: number, b: number): number {
+  return a / b;
+}
+```
+Delete the `calculator.d.ts` file and re-run `npm run build` you would get your packaged bundle in `lib/index.js`. 
+
+That's it. We have converted everything in this project from javascript to typescript. The source code at the end of this section is in branch `keep-going` if you want to take a look. 
